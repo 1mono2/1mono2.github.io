@@ -1,0 +1,18 @@
+---
+title: プロフィール
+lang: ja
+about:
+  template: jolla
+---
+
+## 森本 尊礼
+
+株式会社未来予知で、世界モデルとゲームテストへの応用に取り組んでいます。
+人間のようにゲームをプレイし、不自然な挙動やバグを見つけられるAIを目指しています。
+
+このブログには、研究や実装を進める中で試したことと、その結果を残していきます。
+うまくいったことだけでなく、変わらなかったことや、うまくいかなかったことも記録します。
+
+[GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/)
+
+[記事一覧へ](index.qmd) · [English](../en/about.qmd)

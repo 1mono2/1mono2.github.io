@@ -1,0 +1,18 @@
+---
+title: About
+lang: en
+about:
+  template: jolla
+---
+
+## Takahiro Morimoto
+
+I work on world models and their applications to game testing at Mirai Yochi.
+My goal is to build AI that can play games, recognize unexpected behavior, and help find bugs.
+
+This blog documents experiments and implementation work: what I tried and what happened.
+Alongside improvements, I want to record unchanged results and approaches that did not work.
+
+[GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/)
+
+[All articles](index.qmd) · [日本語](../ja/about.qmd)

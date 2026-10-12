@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - '*.qmd'
+    - 'ja/**/*.qmd'
+    - 'en/**/*.qmd'
+website:
+  title: Takahiro Morimoto
+  site-url: https://1mono2.github.io
+  description: 'Research notes on world models and AI for game testing.'
+  navbar:
+    left:
+      - text: 日本語
+        href: ja/index.qmd
+      - text: English
+        href: en/index.qmd
+    right:
+      - icon: github
+        href: https://github.com/1mono2
+        aria-label: GitHub
+  page-footer:
+    left: 'Takahiro Morimoto · Research notes'
+    right: 'Built with Quarto'
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: false
+    code-copy: true
+    smooth-scroll: true
+    link-external-newwindow: true
+execute:
+  enabled: false

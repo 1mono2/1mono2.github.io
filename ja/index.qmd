@@ -1,0 +1,20 @@
+---
+title: 研究ノート
+subtitle: 世界モデル・ゲームテスト・実験と検証
+lang: ja
+page-layout: full
+title-block-banner: true
+listing:
+  contents: posts
+  sort: 'date desc'
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+---
+
+試したこと、分かったこと、まだ分からないことを残していきます。
+
+最初の研究レポートを準備中です。
+
+[プロフィール](about.qmd) · [English](../en/index.qmd)

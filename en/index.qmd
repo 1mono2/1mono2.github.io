@@ -1,0 +1,20 @@
+---
+title: Research notes
+subtitle: World models, game testing, and experiments
+lang: en
+page-layout: full
+title-block-banner: true
+listing:
+  contents: posts
+  sort: 'date desc'
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+---
+
+What I tried, what I found, and what remains an open question.
+
+The first research report is in preparation.
+
+[About](about.qmd) · [日本語](../ja/index.qmd)
