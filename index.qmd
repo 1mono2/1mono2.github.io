@@ -1,23 +1,23 @@
 ---
 title: Research notes
 page-layout: full
+include-in-header:
+  text: |
+    <script>
+    // Send visitors to the post list in their language before anything is drawn.
+    // A language chosen with the navbar switch wins; otherwise Japanese browsers
+    // go to /ja/, everyone else to /en/.
+    (function () {
+      var lang = null;
+      try { lang = localStorage.getItem('preferred-lang'); } catch (e) {}
+      if (lang !== 'ja' && lang !== 'en') {
+        var langs = navigator.languages || [navigator.language || ''];
+        lang = String(langs[0] || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+      }
+      location.replace(lang + '/');
+    })();
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; url=en/"></noscript>
 ---
-
-```{=html}
-<script>
-// Send visitors to the post list in their language. A language chosen with the
-// navbar switch wins; otherwise Japanese browsers go to /ja/, everyone else to /en/.
-(function () {
-  var lang = null;
-  try { lang = localStorage.getItem('preferred-lang'); } catch (e) {}
-  if (lang !== 'ja' && lang !== 'en') {
-    var langs = navigator.languages || [navigator.language || ''];
-    lang = String(langs[0] || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
-  }
-  location.replace(lang + '/');
-})();
-</script>
-<noscript><meta http-equiv="refresh" content="0; url=en/"></noscript>
-```
 
 [English](en/index.qmd) · [日本語](ja/index.qmd)
