@@ -1,15 +1,23 @@
 ---
 title: Research notes
-subtitle: Takahiro Morimoto
 page-layout: full
-title-block-banner: true
 ---
 
-世界モデルと、ゲームをプレイ・テストするAIの研究ノート。
-実験の過程や結果を、日本語と英語で残していきます。
+```{=html}
+<script>
+// Send visitors to the post list in their language. A language chosen with the
+// navbar switch wins; otherwise Japanese browsers go to /ja/, everyone else to /en/.
+(function () {
+  var lang = null;
+  try { lang = localStorage.getItem('preferred-lang'); } catch (e) {}
+  if (lang !== 'ja' && lang !== 'en') {
+    var langs = navigator.languages || [navigator.language || ''];
+    lang = String(langs[0] || '').toLowerCase().indexOf('ja') === 0 ? 'ja' : 'en';
+  }
+  location.replace(lang + '/');
+})();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=en/"></noscript>
+```
 
-Notes on world models and AI for game testing, in Japanese and English.
-
-## Read the blog
-
-[日本語 →](ja/index.qmd){.btn .btn-primary} [English →](en/index.qmd){.btn .btn-outline-primary}
+[English](en/index.qmd) · [日本語](ja/index.qmd)
