@@ -15,6 +15,5 @@ listing:
 
 What I tried, what I found, and what remains an open question.
 
-The first research report is in preparation.
 
 [About](about.qmd) · [日本語](../ja/index.qmd)
