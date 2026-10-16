@@ -8,9 +8,9 @@ lang: ja
 
 ## 何を試したか
 
-試したかったのは Cosmos Policy の役割混合です。予測器は未来の画像潜在と行動をまとめて予測しますが、学習標本ごとに、未来トークンの一部には雑音を混ぜない綺麗な正解をそのまま条件として与え、残りだけを予測対象にして損失を掛けます。
+試したかったのは Cosmos Policy [[1]](#ref-1) の役割混合です。予測器は未来の画像潜在と行動をまとめて予測しますが、学習標本ごとに、未来トークンの一部には雑音を混ぜない綺麗な正解をそのまま条件として与え、残りだけを予測対象にして損失を掛けます。
 
-Cosmos Policy は拡散モデルでこれを行い、ロボット操作の成功率が上がったと報告しています。今回はフローマッチングの予測器でも同じ効果が出るかを確かめます。
+Cosmos Policy は拡散モデルでこれを行い、ロボット操作の成功率が上がったと報告しています [[1]](#ref-1)。今回はフローマッチング [[2]](#ref-2) の予測器でも同じ効果が出るかを確かめます。
 
 ![学習の全体像。上段が雑音なしのトークン列、下の 3 段が標本の種類ごとの条件と予測対象。緑が条件、赤が予測対象。第 1 ラウンドは未来画像を 8 手すべてに置き、第 2 ラウンドは 8 手先の 1 枚だけにした。](architecture_ja.svg){fig-alt="Four rows: the clean token sequence, then the joint, image and action sample types with conditioning tokens in green and noisy target tokens in red"}
 
@@ -33,12 +33,12 @@ Cosmos Policy は拡散モデルでこれを行い、ロボット操作の成功
 
 ## 設定
 
-予測器は画像と行動を 1 本のトークン列に並べ、過去 8 手を条件に未来 8 手を予測する Transformer です。画像は凍結した I-JEPA の潜在、行動は 2 次元の値です。フローマッチングの始点は直前の潜在に雑音を足したもので、終点を直接出力します。
+予測器は画像と行動を 1 本のトークン列に並べ、過去 8 手を条件に未来 8 手を予測する Transformer [[3]](#ref-3) です。画像は凍結した I-JEPA [[4]](#ref-4) の潜在、行動は 2 次元の値です。フローマッチングの始点は直前の潜在に雑音を足したもので [[5]](#ref-5)、終点を直接出力します。
 
 評価には次の 3 つを使いました。
 
 - **予測誤差**: 専門家データの過去を与え、雑音入りの始点から 1 段で出した未来の画像と行動の MSE
-- **閉ループ成功率**: Push-T は T 字のブロックを決まった目標の位置と向きに押し込む課題です。8 手ぶんの行動のまとまりを「チャンク」と呼びます。試験 439 話の初期状態から、1 チャンクを予測して実行し、また予測する、を繰り返します。300 手以内にブロックが目標から 20 px・20° 以内に入れば成功です。予測器に目標は入力しません。生成は Euler 法 6 段です
+- **閉ループ成功率**: Push-T [[6]](#ref-6) [[7]](#ref-7) は T 字のブロックを決まった目標の位置と向きに押し込む課題です。8 手ぶんの行動のまとまりを「チャンク」と呼びます。試験 439 話の初期状態から、1 チャンクを予測して実行し、また予測する、を繰り返します。300 手以内にブロックが目標から 20 px・20° 以内に入れば成功とします。予測器に目標は入力しません。生成は Euler 法 6 段です
 - **条件使用 u_img**: 未来行動の正解を与えたとき、画像の誤差が何割下がるか
 
 $$
@@ -77,7 +77,7 @@ image-only は常に行動を与えて学習するので、行動を予測しな
 
 ## 第 2 ラウンド: 未来画像を 1 枚にし、image モードの比率を上げる
 
-Cosmos Policy は未来画像をチャンクの終端の 1 枚だけ予測します。これに合わせて未来画像を 8 手先の 1 枚にしました。さらに、仮説 B を直接試すため、image モードの比率を 2/3 に上げた masked-image23 を加えました。比率は joint 1/6、image 2/3、action 1/6 です。
+Cosmos Policy は未来画像をチャンクの終端の 1 枚だけ予測します [[1]](#ref-1)。これに合わせて未来画像を 8 手先の 1 枚にしました。さらに、仮説 B を直接試すため、image モードの比率を 2/3 に上げた masked-image23 を加えました。比率は joint 1/6、image 2/3、action 1/6 です。
 
 ![第 2 ラウンドの比較。左が u_img、中央が image モードの画像 MSE、右が成功率。誤差棒は 95% 信頼区間。— はその実験群が学習していないモード。](s7_summary.png){fig-alt="Three bar charts comparing the five arms on condition use, image MSE given actions, and success rate"}
 
@@ -121,9 +121,20 @@ image モードの標本を 2/3 に増やすと、画像予測が行動を使う
 
 ## 実験条件
 
-- データ: Push-T の専門家データ `quentinll/lewm-pusht`。学習 17,990 話、検証 256 話、試験 439 話
+- データ: Push-T の専門家データ `quentinll/lewm-pusht`。LeWorldModel [[8]](#ref-8) の公開データです。学習 17,990 話、検証 256 話、試験 439 話
 - 符号化器: I-JEPA ViT-H/14、凍結、224 px、1 手あたり画像トークン 4 本
 - 予測器: Transformer、幅 1,280、8 層、10 ヘッド
 - 学習: 50,000 更新、バッチ 256、1 実験群あたり H100 1 枚で 3.5〜4 時間
 - 評価: 検証話から 1,024 標本、EMA 重み、対応ありブートストラップ 10,000 回で 95% 信頼区間。閉ループは話単位のブートストラップ
 - 推論時間: 1 チャンクの予測あたり、Euler 1 段で 5.7 ms、6 段で 33〜35 ms。H100、バッチ 1
+
+## 参考文献
+
+1. []{#ref-1}Moo Jin Kim, Yihuai Gao, Tsung-Yi Lin, Yen-Chen Lin, et al. [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://arxiv.org/abs/2601.16163). arXiv:2601.16163, 2026.
+2. []{#ref-2}Yaron Lipman, Ricky T. Q. Chen, Heli Ben-Hamu, Maximilian Nickel, Matt Le. [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747). ICLR 2023.
+3. []{#ref-3}Ashish Vaswani, Noam Shazeer, Niki Parmar, et al. [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS 2017.
+4. []{#ref-4}Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, et al. [Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture](https://arxiv.org/abs/2301.08243). CVPR 2023.
+5. []{#ref-5}Michael S. Albergo, Mark Goldstein, Nicholas M. Boffi, Rajesh Ranganath, Eric Vanden-Eijnden. [Stochastic Interpolants with Data-Dependent Couplings](https://arxiv.org/abs/2310.03725). ICML 2024.
+6. []{#ref-6}Pete Florence, Corey Lynch, Andy Zeng, et al. [Implicit Behavioral Cloning](https://arxiv.org/abs/2109.00137). CoRL 2021.
+7. []{#ref-7}Cheng Chi, Siyuan Feng, Yilun Du, Zhenjia Xu, et al. [Diffusion Policy: Visuomotor Policy Learning via Action Diffusion](https://arxiv.org/abs/2303.04137). RSS 2023.
+8. []{#ref-8}Lucas Maes, Quentin Le Lidec, Damien Scieur, Yann LeCun, et al. [LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from Pixels](https://arxiv.org/abs/2603.19312). arXiv:2603.19312, 2026.

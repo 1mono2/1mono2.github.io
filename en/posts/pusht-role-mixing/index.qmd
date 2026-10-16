@@ -8,9 +8,9 @@ lang: en
 
 ## What I tried
 
-I wanted to test the role mixing from Cosmos Policy. The predictor outputs future image latents and actions together, but for each training sample some of the future tokens are given their clean ground truth, with no noise, as a condition. Only the remaining tokens are prediction targets with a loss.
+I wanted to test the role mixing from Cosmos Policy [[1]](#ref-1). The predictor outputs future image latents and actions together, but for each training sample some of the future tokens are given their clean ground truth, with no noise, as a condition. Only the remaining tokens are prediction targets with a loss.
 
-Cosmos Policy does this with a diffusion model and reports higher success rates on robot manipulation. Here I check whether the same effect shows up with a flow-matching predictor.
+Cosmos Policy does this with a diffusion model and reports higher success rates on robot manipulation [[1]](#ref-1). Here I check whether the same effect shows up with a flow-matching [[2]](#ref-2) predictor.
 
 ![The training setup. The top row is the clean token sequence; the three rows below show conditioning and target tokens for each sample type. Green is conditioning, red is target. Round 1 places future images at all 8 steps; round 2 keeps only the image 8 steps ahead.](architecture_en.svg){fig-alt="Four rows: the clean token sequence, then the joint, image and action sample types with conditioning tokens in green and noisy target tokens in red"}
 
@@ -33,12 +33,12 @@ I compare the following four variants.
 
 ## Setup
 
-The predictor is a Transformer that lays out images and actions as one token sequence and predicts the next 8 steps from the previous 8. Images are latents from a frozen I-JEPA; actions are 2-D values. The flow-matching source is the last latent plus noise, and the predictor outputs the endpoint directly.
+The predictor is a Transformer [[3]](#ref-3) that lays out images and actions as one token sequence and predicts the next 8 steps from the previous 8. Images are latents from a frozen I-JEPA [[4]](#ref-4); actions are 2-D values. The flow-matching source is the last latent plus noise [[5]](#ref-5), and the predictor outputs the endpoint directly.
 
 I used three measures.
 
 - **Prediction error**: the MSE of future images and actions produced in a single step from the noisy source, given the expert's past
-- **Closed-loop success rate**: Push-T is the task of pushing a T-shaped block into a fixed goal position and orientation. I call a group of 8 actions a "chunk". From each of the 439 test initial states, the predictor outputs a chunk, which is executed before it predicts again. Success means the block comes within 20 px and 20° of the goal within 300 steps. The goal is not an input to the predictor. Generation uses 6 Euler steps
+- **Closed-loop success rate**: Push-T [[6]](#ref-6) [[7]](#ref-7) is the task of pushing a T-shaped block into a fixed goal position and orientation. I call a group of 8 actions a "chunk". From each of the 439 test initial states, the predictor outputs a chunk, which is executed before it predicts again. I count it a success if the block comes within 20 px and 20° of the goal within 300 steps. The goal is not an input to the predictor. Generation uses 6 Euler steps
 - **Condition use u_img**: how much the image error drops, as a fraction, when the true future actions are given
 
 $$
@@ -77,7 +77,7 @@ Image tokens put 3.7% of their attention on clean actions, less than image-only'
 
 ## Round 2: one future image, and a larger image-mode share
 
-Cosmos Policy predicts a single future image at the end of the chunk. I matched this by keeping only the image 8 steps ahead. To test hypothesis B directly, I also added masked-image23, which raises the image-mode share to 2/3. Its shares are joint 1/6, image 2/3, action 1/6.
+Cosmos Policy predicts a single future image at the end of the chunk [[1]](#ref-1). I matched this by keeping only the image 8 steps ahead. To test hypothesis B directly, I also added masked-image23, which raises the image-mode share to 2/3. Its shares are joint 1/6, image 2/3, action 1/6.
 
 ![Round 2 comparison. Left: u_img; middle: image MSE in image mode; right: success rate. Error bars are 95% confidence intervals. — marks a mode the variant was not trained on.](s7_summary.png){fig-alt="Three bar charts comparing the five variants on condition use, image MSE given actions, and success rate"}
 
@@ -121,9 +121,20 @@ Raising the image-mode share to 2/3 made the image prediction use the actions, a
 
 ## Setup details
 
-- Data: Push-T expert data `quentinll/lewm-pusht`; 17,990 training episodes, 256 validation, 439 test
+- Data: Push-T expert data `quentinll/lewm-pusht`, released with LeWorldModel [[8]](#ref-8); 17,990 training episodes, 256 validation, 439 test
 - Encoder: I-JEPA ViT-H/14, frozen, 224 px, 4 image tokens per step
 - Predictor: Transformer, width 1,280, 8 layers, 10 heads
 - Training: 50,000 updates, batch 256, one H100 per variant, 3.5 to 4 hours
 - Evaluation: 1,024 samples from validation episodes, EMA weights, paired bootstrap with 10,000 resamples for 95% confidence intervals; closed loop bootstraps over episodes
 - Inference time: per chunk, 5.7 ms with 1 Euler step and 33 to 35 ms with 6, on an H100 with batch 1
+
+## References
+
+1. []{#ref-1}Moo Jin Kim, Yihuai Gao, Tsung-Yi Lin, Yen-Chen Lin, et al. [Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning](https://arxiv.org/abs/2601.16163). arXiv:2601.16163, 2026.
+2. []{#ref-2}Yaron Lipman, Ricky T. Q. Chen, Heli Ben-Hamu, Maximilian Nickel, Matt Le. [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747). ICLR 2023.
+3. []{#ref-3}Ashish Vaswani, Noam Shazeer, Niki Parmar, et al. [Attention Is All You Need](https://arxiv.org/abs/1706.03762). NeurIPS 2017.
+4. []{#ref-4}Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, et al. [Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture](https://arxiv.org/abs/2301.08243). CVPR 2023.
+5. []{#ref-5}Michael S. Albergo, Mark Goldstein, Nicholas M. Boffi, Rajesh Ranganath, Eric Vanden-Eijnden. [Stochastic Interpolants with Data-Dependent Couplings](https://arxiv.org/abs/2310.03725). ICML 2024.
+6. []{#ref-6}Pete Florence, Corey Lynch, Andy Zeng, et al. [Implicit Behavioral Cloning](https://arxiv.org/abs/2109.00137). CoRL 2021.
+7. []{#ref-7}Cheng Chi, Siyuan Feng, Yilun Du, Zhenjia Xu, et al. [Diffusion Policy: Visuomotor Policy Learning via Action Diffusion](https://arxiv.org/abs/2303.04137). RSS 2023.
+8. []{#ref-8}Lucas Maes, Quentin Le Lidec, Damien Scieur, Yann LeCun, et al. [LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from Pixels](https://arxiv.org/abs/2603.19312). arXiv:2603.19312, 2026.
