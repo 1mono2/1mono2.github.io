@@ -16,4 +16,4 @@ listing:
 試したこと、分かったこと、まだ分からないことを残していきます。
 
 
-[プロフィール](about.qmd) · [English](../en/index.qmd)
+[プロフィール](about.qmd)

@@ -15,4 +15,4 @@ Alongside improvements, I want to record unchanged results and approaches that d
 
 [GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/)
 
-[All articles](index.qmd) · [日本語](../ja/about.qmd)
+[All articles](index.qmd)

@@ -16,4 +16,4 @@ listing:
 What I tried, what I found, and what remains an open question.
 
 
-[About](about.qmd) · [日本語](../ja/index.qmd)
+[About](about.qmd)

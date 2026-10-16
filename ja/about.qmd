@@ -15,4 +15,4 @@ about:
 
 [GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/)
 
-[記事一覧へ](index.qmd) · [English](../en/about.qmd)
+[記事一覧へ](index.qmd)
