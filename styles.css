@@ -2,3 +2,22 @@
 
 /* Posts do not show a publication date in the title block. */
 #title-block-header .quarto-title-meta { display: none !important; }
+
+/* Keep the navbar as one row at every width: title on the left, then the
+   language links, GitHub and search together on the right. */
+#quarto-header .navbar-container { flex-wrap: nowrap; }
+#quarto-header .navbar-brand-container { margin-left: 0 !important; margin-right: auto !important; order: 0; }
+#quarto-header .navbar-nav { order: 1; flex-direction: row; }
+#quarto-header #quarto-search { order: 2; margin-left: 0.25rem; }
+@media (max-width: 575.98px) {
+  #quarto-header .navbar-container { padding-left: 0.75rem; padding-right: 0.5rem; }
+  #quarto-header .navbar-nav .nav-link { padding-left: 0.35rem; padding-right: 0.35rem; }
+  #quarto-header #quarto-search { margin-left: 0; }
+  #quarto-header .navbar-title { font-size: 1rem; }
+}
+
+/* Wide tables scroll inside themselves so the page never scrolls sideways. */
+main table.table { display: block; max-width: 100%; overflow-x: auto; }
+@media (max-width: 575.98px) {
+  main table.table th, main table.table td { white-space: nowrap; }
+}
