@@ -1,0 +1,15 @@
+<script>
+// Point the navbar language links at the same page in the other language,
+// and hide the link for the language being read.
+(function () {
+  var path = location.pathname;
+  var lang = path.indexOf('/ja/') !== -1 ? 'ja' : path.indexOf('/en/') !== -1 ? 'en' : null;
+  document.querySelectorAll('#quarto-header a.nav-link').forEach(function (a) {
+    var label = a.textContent.trim();
+    var target = label === 'English' ? 'en' : label === '日本語' ? 'ja' : null;
+    if (!target || !lang) return;
+    if (target === lang) { a.closest('li').style.display = 'none'; return; }
+    a.setAttribute('href', path.replace('/' + lang + '/', '/' + target + '/'));
+  });
+})();
+</script>

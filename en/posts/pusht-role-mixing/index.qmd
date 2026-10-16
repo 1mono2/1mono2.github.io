@@ -6,8 +6,6 @@ categories: [world-model, push-t, flow-matching, cosmos-policy]
 lang: en
 ---
 
-[日本語版](../../../ja/posts/pusht-role-mixing/index.qmd)
-
 ## What I tried
 
 I wanted to test the role mixing from Cosmos Policy. The predictor outputs future image latents and actions together, but for each training sample some of the future tokens are given their clean ground truth, with no noise, as a condition. Only the remaining tokens are prediction targets with a loss.

@@ -1,1 +1,4 @@
 /* Quarto official blog template: standard Cosmo theme. */
+
+/* Posts do not show a publication date in the title block. */
+#title-block-header .quarto-title-meta { display: none !important; }

@@ -6,8 +6,6 @@ categories: [world-model, push-t, flow-matching, cosmos-policy]
 lang: ja
 ---
 
-[English version](../../../en/posts/pusht-role-mixing/index.qmd)
-
 ## 何を試したか
 
 試したかったのは Cosmos Policy の役割混合です。予測器は未来の画像潜在と行動をまとめて予測しますが、学習標本ごとに、未来トークンの一部には雑音を混ぜない綺麗な正解をそのまま条件として与え、残りだけを予測対象にして損失を掛けます。
