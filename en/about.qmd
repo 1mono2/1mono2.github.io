@@ -13,6 +13,6 @@ My goal is to build AI that can play games, recognize unexpected behavior, and h
 This blog documents experiments and implementation work: what I tried and what happened.
 Alongside improvements, I want to record unchanged results and approaches that did not work.
 
-[GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/)
+[GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/) · [X](https://x.com/1mono2Prod)
 
 [All articles](index.qmd)

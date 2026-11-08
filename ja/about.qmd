@@ -13,6 +13,6 @@ about:
 このブログには、研究や実装を進める中で試したことと、その結果を残していきます。
 うまくいったことだけでなく、変わらなかったことや、うまくいかなかったことも記録します。
 
-[GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/)
+[GitHub](https://github.com/1mono2) · [LinkedIn](https://www.linkedin.com/in/1mono2/) · [X](https://x.com/1mono2Prod)
 
 [記事一覧へ](index.qmd)
