@@ -78,7 +78,6 @@ lang: ja
 - データ: Push-T の専門家データ `quentinll/lewm-pusht`（LeWorldModel [[3]](#ref-3) の公開データ）。符号化器は凍結 I-JEPA ViT-H/14、1 手あたり画像トークン 4 本（前計算）
 - 学習: 各腕 10,000 更新、バッチ 64 窓（= 512 チャンク標本）、AdamW lr 1e-4、warmup 500 + cosine、EMA（減衰 1 − t^−0.75。減衰式を (1 − 1/t)^1.75 に変えるだけで閉ループが 7 pp 落ちるので固定）。H100 または A100 1〜2 枚で、flat 2〜4 時間、階層 6〜13 時間
 - 評価: 固定目標閉ループ 439 話、Euler 6 段、始点雑音 σ = 0.02。差は対応ありブートストラップ 10,000 回、seed 999
-- 記録: [world-model-qa](https://github.com/miraiyochi-ai/world-model-qa) の `experiments/pusht_s14_hier_switches`（本文の結果）と `experiments/pusht_s9_hier_lower_output`（最初に走らせたときの記録）。以前の階層は `experiments/pusht_s8_hier_shared_latent`。閉ループの話単位の結果（jsonl.gz）と比較 JSON は各 `records/` に、図を描くスクリプトは `docs/research/pusht-hierarchy-series/make_figs.py` にあります
 - 費用: 2 実験で GPU 約 250 ドル。基準線の回復に使った 4 本の flat を含めると約 415 ドル
 
 ## 参考文献

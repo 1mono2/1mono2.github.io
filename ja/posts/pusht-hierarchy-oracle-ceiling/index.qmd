@@ -106,7 +106,6 @@ flat の失敗 285 話のうち、押す向きを誤って状況を悪化させ�
 - データ・モデル・評価は [最初の記事](../pusht-hierarchy-upper-unread/) と同じ。符号化器は凍結 I-JEPA ViT-H/14 [[4]](#ref-4)、下位はフローマッチング [[5]](#ref-5) の予測器、データは LeWorldModel [[3]](#ref-3) の公開した Push-T [[1]](#ref-1) [[2]](#ref-2) の専門家実演
 - 学習: 10,000 更新、バッチ 64 窓（= 512 チャンク標本）、AdamW lr 1e-4、warmup 500 + cosine、EMA。H100 1 枚で約 9 時間
 - 評価: 固定目標閉ループ 439 話、Euler 6 段、始点雑音 σ = 0.02。差は対応ありブートストラップ 10,000 回、seed 999。主要 2 条件は Bonferroni 補正の 97.5% 区間
-- 記録: [world-model-qa](https://github.com/miraiyochi-ai/world-model-qa) の `experiments/pusht_s15_oracle_subgoal_ceiling`。失敗の型の事後分析と flat-big（`experiments/pusht_s8_hier_shared_latent`）も同じリポジトリ。図を描くスクリプトは `docs/research/pusht-hierarchy-series/make_figs.py`
 - 費用: GPU 約 22 ドル。系列全体では約 440 ドル（基準線の回復に使った分を含む）
 
 ## 参考文献
